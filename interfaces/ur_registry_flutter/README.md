@@ -1,3 +1,12 @@
+# Solflare
+
+The reason why we are using different package for qr code scanner. 
+
+`mobile_scanner` and `pretty_qr_code` instead of original `qr_code_scanner_plus` and `qr_flutter` 
+
+That change also cause some UI adjustments for  
+1. lib/components/animated_qr_scanner.dart
+2. lib/components/animated_qr_code.dart
 # ur_registry_flutter
 
 This is an FFI bridge for [`ur-registry-rust`](https://github.com/KeystoneHQ/ur-registry-rust) with flutter usage.
