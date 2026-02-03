@@ -7,6 +7,13 @@ The reason why we are using different package for qr code scanner.
 That change also cause some UI adjustments for  
 1. lib/components/animated_qr_scanner.dart
 2. lib/components/animated_qr_code.dart
+
+Synced on 03 February 2026
+1. pulled changes from original commit 2b2bd1e
+2. fixed example app so that it compiles on android 16
+
+![03-02-2026.png](03-02-2026.png)
+
 # ur_registry_flutter
 
 This is an FFI bridge for [`ur-registry-rust`](https://github.com/KeystoneHQ/ur-registry-rust) with flutter usage.
