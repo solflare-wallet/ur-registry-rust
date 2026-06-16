@@ -61,7 +61,7 @@ class Response extends Struct {
   }
 
   void checkValueType(String target) {
-    if(valueType.toDartString() != target) throw Exception("Wrong response type, expected $target, received ${valueType.toDartString()}");
+    if (valueType.toDartString() != target) throw Exception("Wrong response type, expected $target, received ${valueType.toDartString()}");
   }
 
   Pointer<Void> getObject() {

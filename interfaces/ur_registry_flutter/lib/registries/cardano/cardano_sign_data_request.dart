@@ -34,12 +34,10 @@ class CardanoSignDataRequest extends NativeObject {
 
   late NativeGetUREncoder nativeGetUREncoder = lib
       .lookup<NativeFunction<NativeGetUREncoder>>("${nativePrefix}_get_ur_encoder") //
-      .asFunction();      
-
-  late NativeGetRequestId nativeGetRequestId = lib
-      .lookup<NativeFunction<NativeGetRequestId>>(
-          "${nativePrefix}_get_request_id")
       .asFunction();
+
+  late NativeGetRequestId nativeGetRequestId =
+      lib.lookup<NativeFunction<NativeGetRequestId>>("${nativePrefix}_get_request_id").asFunction();
 
   late String uuid;
 

@@ -55,3 +55,21 @@ abstract class NativeFunction<T> {
 extension StringUtf8Pointer on String {
   toNativeUtf8() {}
 }
+
+abstract class Allocator {
+  const Allocator();
+
+  void free(Pointer<dynamic> pointer);
+}
+
+/// Stub counterpart of `package:ffi`'s `malloc` for non-IO platforms.
+const Allocator malloc = _StubAllocator();
+
+class _StubAllocator implements Allocator {
+  const _StubAllocator();
+
+  @override
+  void free(Pointer<dynamic> pointer) {
+    throw UnimplementedError();
+  }
+}

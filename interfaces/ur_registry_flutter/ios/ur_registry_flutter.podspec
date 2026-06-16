@@ -15,15 +15,17 @@ A new flutter plugin project.
   s.source           = { :path => '.' }
   s.public_header_files = 'Classes**/*.h'
   s.source_files = 'Classes/**/*'
-  s.vendored_libraries = "**/*.a"
+  # The original plugin bundled a `cargo lipo` static archive, which gives us
+  # an arm64 device slice but not an arm64-simulator slice. Apple Silicon
+  # simulators require the latter, so use the upstream XCFramework packaging
+  # path that contains both iOS and iOS Simulator binaries.
+  s.vendored_frameworks = 'URRegistryFFI.xcframework'
   s.dependency 'Flutter'
   s.platform = :ios, '9.0'
 
-  # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = {
-    'DEFINES_MODULE' => 'YES',
-    'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64 i386',
-    'OTHER_LDFLAGS' => '-force_load $(PODS_TARGET_SRCROOT)/libur_registry_ffi.a'
+    # Keep the pod as a module for the generated Swift/ObjC compatibility header.
+    'DEFINES_MODULE' => 'YES'
   }
   s.swift_version = '5.0'
 end

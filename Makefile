@@ -21,13 +21,14 @@ endif
 
 debug: check_env clean_up generate_android_debug generate_ios_debug
 
-release: check_env clean_up generate_android generate_ios
+release: check_env clean_up generate_android generate_xcframework
 
 clean_up:
 	@echo "Step: Removing target"
 	rm -rf ./target
 	rm -rf ./interfaces/ur_registry_flutter/android/src/main/jniLibs
 	rm -f ./interfaces/ur_registry_flutter/ios/libur_registry_ffi.a
+	rm -rf ./interfaces/ur_registry_flutter/ios/URRegistryFFI.xcframework
 	mkdir ./interfaces/ur_registry_flutter/android/src/main/jniLibs
 	mkdir ./interfaces/ur_registry_flutter/android/src/main/jniLibs/arm64-v8a
 	mkdir ./interfaces/ur_registry_flutter/android/src/main/jniLibs/armeabi-v7a
@@ -60,6 +61,7 @@ generate_xcframework:
 	mkdir -p target/sim
 	lipo target/aarch64-apple-ios-sim/release/libur_registry_ffi.a target/x86_64-apple-ios/release/libur_registry_ffi.a -create -output target/sim/libur_registry_ffi.a
 	xcodebuild -create-xcframework -library target/sim/libur_registry_ffi.a -headers include -library target/aarch64-apple-ios/release/libur_registry_ffi.a -headers include -output target/URRegistryFFI.xcframework
+	cp -R ./target/URRegistryFFI.xcframework ./interfaces/ur_registry_flutter/ios/
 
 generate_ios_debug:
 	@echo "Step: Generate iOS builds"

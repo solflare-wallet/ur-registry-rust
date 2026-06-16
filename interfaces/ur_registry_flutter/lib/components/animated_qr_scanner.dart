@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,26 +23,36 @@ class _Cubit extends Cubit<_State> {
   bool succeed = false;
 
   _Cubit(
-      this.target,
-      this.onSuccess,
-      this.onFailed, {
-        this.overlay,
-      }) : super(_InitialState());
+    this.target,
+    this.onSuccess,
+    this.onFailed, {
+    this.overlay,
+  }) : super(_InitialState());
 
   void receiveQRCode(String? code) {
     try {
       if (code != null) {
         urDecoder.receive(code);
         if (urDecoder.isComplete()) {
-          final result = urDecoder.resolve(target);
+          final NativeObject result = urDecoder.resolve(target);
           if (!succeed) {
             onSuccess(result);
             succeed = true;
           }
         }
       }
-    } catch (e) {
-      onFailed("Error when receiving UR $e");
+    } catch (e, stackTrace) {
+      // Route the real exception through FlutterError so the host app's
+      // error reporting (FlutterError.onError, e.g. Crashlytics) records
+      // it; the failure callback gets a stable message instead of a raw
+      // toString that would leak decoder internals into UI copy.
+      FlutterError.reportError(FlutterErrorDetails(
+        exception: e,
+        stack: stackTrace,
+        library: 'ur_registry_flutter',
+        context: ErrorDescription('while receiving an animated UR QR frame'),
+      ));
+      onFailed('Failed to decode QR code');
       reset();
     }
   }
@@ -57,12 +69,11 @@ class AnimatedQRScanner extends StatelessWidget {
   final FailureCallback onFailed;
   final Widget? overlay;
 
-  const AnimatedQRScanner({Key? key, required this.target, required this.onSuccess, required this.onFailed, this.overlay})
-      : super(key: key);
+  const AnimatedQRScanner({super.key, required this.target, required this.onSuccess, required this.onFailed, this.overlay});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
+    return BlocProvider<_Cubit>(
       create: (BuildContext context) => _Cubit(target, onSuccess, onFailed, overlay: overlay),
       child: _AnimatedQRScanner(),
     );
@@ -88,9 +99,10 @@ class _AnimatedQRScannerState extends State<_AnimatedQRScanner> {
   Widget build(BuildContext context) {
     return MobileScanner(
       controller: controller,
-      overlay: _cubit.overlay,
+      // mobile_scanner 7.x replaced overlay with overlayBuilder.
+      overlayBuilder: (BuildContext context, BoxConstraints constraints) => _cubit.overlay ?? const SizedBox.shrink(),
       onDetect: (BarcodeCapture capture) {
-        for (final barcode in capture.barcodes) {
+        for (final Barcode barcode in capture.barcodes) {
           _cubit.receiveQRCode(barcode.rawValue);
         }
       },
@@ -99,7 +111,8 @@ class _AnimatedQRScannerState extends State<_AnimatedQRScanner> {
 
   @override
   void dispose() {
-    controller.dispose();
+    // mobile_scanner 7.x dispose is async; fire-and-forget is sufficient here.
+    unawaited(controller.dispose());
     super.dispose();
   }
 }

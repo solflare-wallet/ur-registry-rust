@@ -13,7 +13,9 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^9.0.0
-  mobile_scanner: ^4.0.1
+  # Keep this aligned with the app-level upgrade so iOS no longer resolves the
+  # old ML Kit pod chain that conflicts with google_sign_in_ios.
+  mobile_scanner: ^7.2.0
   pretty_qr_code: ^3.3.0
   uuid: ^4.1.0
 

@@ -14,14 +14,10 @@ class CardanoSignature extends NativeObject {
     nativeObject = object;
   }
 
-  late NativeGetRequestId nativeGetRequestId = lib
-      .lookup<NativeFunction<NativeGetRequestId>>(
-          "${nativePrefix}_get_request_id")
-      .asFunction();
-  late NativeGetWitnessSet nativeGetWitnessSet = lib
-      .lookup<NativeFunction<NativeGetWitnessSet>>(
-          "${nativePrefix}_get_witness_set")
-      .asFunction();
+  late NativeGetRequestId nativeGetRequestId =
+      lib.lookup<NativeFunction<NativeGetRequestId>>("${nativePrefix}_get_request_id").asFunction();
+  late NativeGetWitnessSet nativeGetWitnessSet =
+      lib.lookup<NativeFunction<NativeGetWitnessSet>>("${nativePrefix}_get_witness_set").asFunction();
 
   String getRequestId() {
     final response = nativeGetRequestId(nativeObject).ref;

@@ -16,22 +16,13 @@ class CardanoSignCip8DataSignature extends NativeObject {
     nativeObject = object;
   }
 
-  late NativeGetRequestId nativeGetRequestId = lib
-      .lookup<NativeFunction<NativeGetRequestId>>(
-          "${nativePrefix}_get_request_id")
-      .asFunction();
-  late NativeGetSignature nativeGetSignature = lib
-      .lookup<NativeFunction<NativeGetSignature>>(
-          "${nativePrefix}_get_signature")
-      .asFunction();
-  late NativeGetPublicKey nativeGetPublicKey = lib
-      .lookup<NativeFunction<NativeGetPublicKey>>(
-          "${nativePrefix}_get_public_key")
-      .asFunction();
-  late NativeGetAddressField nativeGetAddressField = lib
-      .lookup<NativeFunction<NativeGetAddressField>>(
-          "${nativePrefix}_get_address_field")
-      .asFunction();
+  late NativeGetRequestId nativeGetRequestId =
+      lib.lookup<NativeFunction<NativeGetRequestId>>("${nativePrefix}_get_request_id").asFunction();
+  late NativeGetSignature nativeGetSignature = lib.lookup<NativeFunction<NativeGetSignature>>("${nativePrefix}_get_signature").asFunction();
+  late NativeGetPublicKey nativeGetPublicKey =
+      lib.lookup<NativeFunction<NativeGetPublicKey>>("${nativePrefix}_get_public_key").asFunction();
+  late NativeGetAddressField nativeGetAddressField =
+      lib.lookup<NativeFunction<NativeGetAddressField>>("${nativePrefix}_get_address_field").asFunction();
 
   String getRequestId() {
     final response = nativeGetRequestId(nativeObject).ref;

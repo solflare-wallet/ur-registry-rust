@@ -39,19 +39,12 @@ class EthSignRequest extends NativeObject {
   static int typedData = 2;
   static int personalMessage = 3;
   static int typedTransaction = 4;
-  late Construct nativeConstruct = lib
-      .lookup<NativeFunction<NativeConstruct>>("${nativePrefix}_construct")
-      .asFunction<Construct>();
-  late NativeGetUREncoder nativeGetUREncoder = lib
-      .lookup<NativeFunction<NativeGetUREncoder>>(
-          "${nativePrefix}_get_ur_encoder")
-      .asFunction();
-  late NativeNew nativeNew =
-      lib.lookup<NativeFunction<NativeNew>>("${nativePrefix}_new").asFunction();
-  late NativeGetRequestId nativeGetRequestId = lib
-      .lookup<NativeFunction<NativeGetRequestId>>(
-          "${nativePrefix}_get_request_id")
-      .asFunction();
+  late Construct nativeConstruct = lib.lookup<NativeFunction<NativeConstruct>>("${nativePrefix}_construct").asFunction<Construct>();
+  late NativeGetUREncoder nativeGetUREncoder =
+      lib.lookup<NativeFunction<NativeGetUREncoder>>("${nativePrefix}_get_ur_encoder").asFunction();
+  late NativeNew nativeNew = lib.lookup<NativeFunction<NativeNew>>("${nativePrefix}_new").asFunction();
+  late NativeGetRequestId nativeGetRequestId =
+      lib.lookup<NativeFunction<NativeGetRequestId>>("${nativePrefix}_get_request_id").asFunction();
 
   late String uuid;
 
@@ -77,15 +70,8 @@ class EthSignRequest extends NativeObject {
     final signDataStr = hex.encode(signData);
     final xfpInt = int.parse(xfp, radix: 16);
 
-    final response = nativeConstruct(
-            uuidBufferStr.toNativeUtf8(),
-            signDataStr.toNativeUtf8(),
-            signType,
-            chainId,
-            path.toNativeUtf8(),
-            xfpInt,
-            address.toNativeUtf8(),
-            origin.toNativeUtf8())
+    final response = nativeConstruct(uuidBufferStr.toNativeUtf8(), signDataStr.toNativeUtf8(), signType, chainId, path.toNativeUtf8(),
+            xfpInt, address.toNativeUtf8(), origin.toNativeUtf8())
         .ref;
     nativeObject = response.getObject();
   }

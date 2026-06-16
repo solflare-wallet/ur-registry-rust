@@ -1,4 +1,11 @@
-include: package:flutter_lints/flutter.yaml
-
-# Additional information about this file can be found at
-# https://dart.dev/guides/language/analysis-options
+# Fork of KeystoneHQ ur-registry. The package is analyzed by the root
+# `flutter analyze` run for core diagnostics (real type errors, unused/dead
+# code), but the app's style lints and strict-cast modes are intentionally not
+# imposed: the Dart here tracks upstream, and rewriting it to the app's lint
+# profile would destroy diffability against the fork.
+# strict-casts/strict-raw-types default to false; stated explicitly because
+# the root analysis_options.yaml enables them and this opt-out is deliberate.
+analyzer:
+  language:
+    strict-casts: false
+    strict-raw-types: false
